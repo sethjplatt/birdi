@@ -24,7 +24,7 @@ import {
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useEffect } from 'react';
-import { collectInfoFromWiki } from '../API/wikiApiFunctions';
+import { collectInfoFromWiki } from '../API/wikiApiFunctions.ts';
 import { TfiMore } from 'react-icons/tfi';
 
 export default function ActiveCard({ bird, profile }) {
