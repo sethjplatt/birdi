@@ -6,28 +6,31 @@ import { Box, Container,
   Card, CardBody, 
   Avatar, Text} from '@chakra-ui/react';
 import { Navigate } from 'react-router-dom';
-import Navbar from './Navbar';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { CollectUserInfoFromDB } from '../API/dbFunctions';
 import ActiveCard from './ActiveCard';
+import { RootState } from '../index';
+
 
 export default function Profile() {
 
   const dispatch = useDispatch()  
-  const userInfo = useSelector(state=>state.userInfo);
+  const userInfo = useSelector((state: RootState)=>state.userInfo);
 
   const [pageLoading, setPageLoading] = useState(true)
-  const [birdsByUser, setBirdsByUser] = useState([])
+  const [birdsByUser, setBirdsByUser] = useState<string[]>([])
   
   useEffect(() => {
     if (isAuthenticated){
-      console.log(user, "user user!!!!");
-      CollectUserInfoFromDB(user.email).then(user=>{
-        // set data in redux
-        dispatch({type:'UPDATE_USER_INFO',
-        user})
-        setBirdsByUser(user.birdSightingsIds || [])
+
+        user?.email && CollectUserInfoFromDB(user.email).then(user=>{
+
+        dispatch({
+          type:'UPDATE_USER_INFO',
+          user
+        })
+        user && user.birdSightingsIds && setBirdsByUser(user.birdSightingsIds || [])
       })
     }
     setPageLoading(false)
@@ -55,16 +58,16 @@ export default function Profile() {
             <Card bg='brand.whiteish.def' my='25px' w='100%' textAlign='center'>
               <CardBody pt='70px'>
                 <Box>
-                  <Avatar pos='absolute' top={-35} left={'150px'} justifySelf='center' alignSelf={'center'} size='xl' src={user.picture} alt={user.name} />
-                  <Text><b>{user.email}</b> has seen {birdsByUser.length} bird{(birdsByUser.length> 1|| birdsByUser.length == 0 ) && <>s</>}</Text>
+                  <Avatar pos='absolute' top={-35} left={'150px'} justifySelf='center' alignSelf={'center'} size='xl' src={user && user.picture} />
+                  <Text><b>{user && user.email}</b> has seen {birdsByUser.length} bird{(birdsByUser.length> 1|| birdsByUser.length == 0 ) && <>s</>}</Text>
                 </Box>
               </CardBody>
             </Card>
           </Box>
           <SimpleGrid columns={2} spacing={2} >
-            {birdsByUser.length > 0 && birdsByUser.map(bird=>
+            {birdsByUser.length > 0 && birdsByUser.map(birdId=>
             <GridItem>
-              <ActiveCard key={bird._id} bird={bird} profile/>
+              <ActiveCard key={birdId} bird={birdId} profile/>
             </GridItem>
             )}
           </SimpleGrid>
