@@ -6,16 +6,16 @@ import {
   SimpleGrid,
   Button,
   Card,
-  useDisclosure,
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
-import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, Navigate } from 'react-router-dom';
-import { sendBirdSightingToDB } from '../API/dbFunctions.ts';
+import { useNavigate } from 'react-router-dom';
+import { sendBirdSightingToDB } from '../API/dbFunctions';
+import { RootState } from '../index';
+import { latLng } from '../Types/MapTypes';
+
 
 import Map from './Map';
-import Navbar from './Navbar';
 
 export default function Upload() {
   const [lng, setLng] = useState(0);
@@ -23,27 +23,25 @@ export default function Upload() {
   const [btnLoading, setBtnLoading] = useState(false);
   const nav = useNavigate();
 
-  const userInfo = useSelector((state) => state.userInfo);
-  const SelectedBirdOnExplore = useSelector(
-    (state) => state.SelectedBirdOnExplore
-  );
+  const userInfo = useSelector((state: RootState) => state.userInfo);
+
   const dispatch = useDispatch();
 
-  async function handleSubmit(e) {
-    e.preventDefault();
+  async function handleSubmit(event: Event) {
+    event.preventDefault();
     setBtnLoading(true);
-    let formData = new FormData(e.target);
-    formData.set('comName', formData.get('comName'));
-    formData.set('sciName', formData.get('sciName'));
-    formData.set('obsDt', formData.get('obsDt').replace('T', ' ')); //formatting the date
+    const target: HTMLFormElement = event.target as HTMLFormElement
+    let formData = new FormData(target);
+    formData.set('comName', formData.get('comName') as string);
+    formData.set('sciName', formData.get('sciName') as string);
+    formData.set('obsDt', (formData.get('obsDt') as string).replace('T', ' '));
     formData.set('lat', lat);
     formData.set('lng', lng);
-    formData.set('userID', userInfo._id);
-    formData.set('userEmail', userInfo.email);
-    formData.append('file', formData.get('file')[0]);
-    console.log('bird data sent');
+    formData.set('userID', userInfo._id as string);
+    formData.set('userEmail', userInfo.email as string);
+    formData.append('file', formData.get('file') as File);
+    // formData.append('file', formData.get('file')[0] as File);
     const res = await sendBirdSightingToDB(formData);
-    console.log('db response', res);
     dispatch({ type: 'UPDATE_EXPLORE_BIRD', bird: res.result });
     return nav('/', { state: { uploaded: res.result } });
   }
@@ -62,7 +60,7 @@ export default function Upload() {
       >
         <Card bg='brand.whiteish.def' px='10px' pt='10px'>
           <form
-            onSubmit={(e) => handleSubmit(e)}
+            onSubmit={(event) => handleSubmit(event as unknown as Event)}
             style={{ display: 'flex', flexDirection: 'column' }}
           >
             <SimpleGrid columns={2} spacing={2}>

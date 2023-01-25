@@ -90,10 +90,11 @@ export default function Map({ sightings, coords, dot }) {
     });
 
     //handle mapclick
-    map.current.on('click', (e) => {
+    /* map.current.on('click', (e) => {
       const listOfPoints = map.current.queryRenderedFeatures(e.point, {
         layers: ['locations', 'locations2'],
       });
+      console.log(listOfPoints[0], '=================');
       if (listOfPoints.length < 1 || !listOfPoints) return; //Makes sure a point is actually clicked
       dispatch({
         type: 'UPDATE_EXPLORE_BIRD',
@@ -101,7 +102,7 @@ export default function Map({ sightings, coords, dot }) {
       }); // convert data back from geoJson
       focusPoint(listOfPoints[0]);
       popUpCreation(listOfPoints[0]);
-    });
+    }); */
 
     // plots the data
     // only runs if there is a current map and the locations layer does't exists

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useAuth0 } from "@auth0/auth0-react";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Box, Container,
   SimpleGrid, GridItem, 
   Card, CardBody, 
@@ -10,15 +10,15 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { CollectUserInfoFromDB } from '../API/dbFunctions';
 import ActiveCard from './ActiveCard';
-import { RootState } from '../index';
+// import { RootState } from '../index';
 
 
 export default function Profile() {
 
   const dispatch = useDispatch()  
-  const userInfo = useSelector((state: RootState)=>state.userInfo);
+  // const userInfo = useSelector((state: RootState)=>state.userInfo);
 
-  const [pageLoading, setPageLoading] = useState(true)
+  // const [pageLoading, setPageLoading] = useState(true)
   const [birdsByUser, setBirdsByUser] = useState<string[]>([])
   
   useEffect(() => {
@@ -33,7 +33,7 @@ export default function Profile() {
         user && user.birdSightingsIds && setBirdsByUser(user.birdSightingsIds || [])
       })
     }
-    setPageLoading(false)
+    // setPageLoading(false)
   }, [])
   
   const { user, isAuthenticated, isLoading } = useAuth0();
@@ -59,13 +59,13 @@ export default function Profile() {
               <CardBody pt='70px'>
                 <Box>
                   <Avatar pos='absolute' top={-35} left={'150px'} justifySelf='center' alignSelf={'center'} size='xl' src={user && user.picture} />
-                  <Text><b>{user && user.email}</b> has seen {birdsByUser.length} bird{(birdsByUser.length> 1|| birdsByUser.length == 0 ) && <>s</>}</Text>
+                  <Text><b>{user && user.email}</b> has seen {birdsByUser.length} bird{(birdsByUser.length> 1|| birdsByUser.length === 0 ) && <>s</>}</Text>
                 </Box>
               </CardBody>
             </Card>
           </Box>
           <SimpleGrid columns={2} spacing={2} >
-            {birdsByUser.length > 0 && birdsByUser.map(birdId=>
+            {birdsByUser.length > 0 && birdsByUser.map(birdId =>
             <GridItem>
               <ActiveCard key={birdId} bird={birdId} profile/>
             </GridItem>

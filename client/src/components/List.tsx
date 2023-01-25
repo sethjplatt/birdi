@@ -1,18 +1,21 @@
 import {Box, Heading, Stack } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
+import { BirdiUserSighting } from '../Types/DbApiTypes';
+import { EBird } from '../Types/EBirdTypes';
+
 
 import ListItem from './ListItem'
 
-export default function List({data}) {
+export default function List({data}: {data: (EBird[] | BirdiUserSighting[])[]}) {
   
   
-  const [list, setList] = useState([])
+  const [list, setList] = useState<(EBird | BirdiUserSighting)[]>([])
 
 
 
   useEffect(() => {
     if (data){
-      setList([...data[0],...data[1]])
+      setList([...data[0], ...data[1]])
     }
   }, [data])
   
@@ -34,12 +37,11 @@ export default function List({data}) {
     },
   }}>
       <Stack spacing='2'>
-        {list && list.length > 0 && list.map(bird=>{
+        {list && list.length > 0 && list.map(bird => {
         return(
         <ListItem 
           key={bird.id} 
           bird={bird} 
-          // onClick={()=>console.log("clicked",bird)} 
           />
         )})}
       </Stack>

@@ -1,12 +1,15 @@
 // import {Card, CardBody, Image } from '@chakra-ui/react'
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { BirdiUserSighting } from '../Types/DbApiTypes';
+import { EBird } from '../Types/EBirdTypes';
+import { RootState } from '../index';
 
 import { Box, Card, Text } from '@chakra-ui/react';
 
-export default function ListItem({ bird }) {
+export default function ListItem({ bird }: { bird: (EBird | BirdiUserSighting) }) {
   const SelectedBirdOnExplore = useSelector(
-    (state) => state.SelectedBirdOnExplore
+    (state: RootState) => state.SelectedBirdOnExplore
   );
 
   const dispatch = useDispatch();

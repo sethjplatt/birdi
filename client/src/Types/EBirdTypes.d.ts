@@ -1,16 +1,16 @@
 export interface EBird {
-  comName: String;
-  howMany: Number;
-  id: Number;
-  lat: Number;
-  lng: Number;
-  locId: String;
-  locName: String;
-  locationPrivate: Boolean;
-  obsDt: String;
-  obsReviewed: Boolean;
-  obsValid: Boolean;
-  sciName: String;
-  speciesCode: String;
-  subId: String;
+  comName: string;
+  howMany: number;
+  id: number;
+  lat: number;
+  lng: number;
+  locId: string;
+  locName: string;
+  locationPrivate: boolean;
+  obsDt: string;
+  obsReviewed: boolean;
+  obsValid: boolean;
+  sciName: string;
+  speciesCode: string;
+  subId: string;
 }

@@ -17,7 +17,7 @@ export default function Explore() {
   );
   console.log('SelectedBirdOnExplore', SelectedBirdOnExplore);
 
-  const [data, setData] = useState<(EBird[] | BirdiUserSighting[])[]>(); // list of lists : [apiData, dbData]
+  const [data, setData] = useState<(EBird[] | BirdiUserSighting[])[]>([]); // list of lists : [apiData, dbData]
 
   const [lng, setLng] = useState(0);
   const [lat, setLat] = useState(0);

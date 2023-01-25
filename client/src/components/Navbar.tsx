@@ -1,27 +1,13 @@
 import { Avatar, Box, Button, Spinner, Stack, Image, Text, HStack, Container } from '@chakra-ui/react'
-import React from 'react'
-// import { ReactComponent as Logo } from '../../public/Valk_Segelzeichen.svg';
-import { FaKiwiBird } from 'react-icons/fa'
 
 import {useNavigate, Link} from 'react-router-dom'
 import { useAuth0 } from "@auth0/auth0-react";
-import {useSelector} from 'react-redux'
 import logo from '../birdiLogoJPG.jpg';
 export default function Navbar() {
   
   const nav = useNavigate()
-  const userInfo = useSelector(state=>state.userInfo);
 
   const { logout, loginWithRedirect, isAuthenticated, user,isLoading } = useAuth0();
-  
-
-  async function handleLogin() {
-    // const x = await loginWithPopup({ returnTo: window.location.origin })
-    const x = await loginWithRedirect()
-    
-    if (isAuthenticated) {
-    }
-  }
 
   return (
     <Box bg='brand.darkish'>
@@ -53,13 +39,14 @@ export default function Navbar() {
           </Button>
           :
           <Button
-          color='brand.darkish'             
+            color='brand.darkish'             
             bg='brand.whiteish.def'
-            _hover={{bg:'brand.whiteish.hover'}}>
-          <Link onClick={async()=>{
-            await handleLogin()
-            return nav('/upload')
-          }}>Upload your bird sighting</Link>
+            _hover={{bg:'brand.whiteish.hover'}}
+            onClick={ async () => {
+                await loginWithRedirect()
+                return nav('/upload')
+              }}>
+              Upload your bird sighting
           </Button>
           }
 
@@ -85,9 +72,9 @@ export default function Navbar() {
             _hover={{bg:'brand.whiteish.hover'}}
             data-testid='login-button'
             
-            onClick={async()=>await handleLogin()}>Login</Button>
+            onClick={async()=>await loginWithRedirect()}>Login</Button>
           }
-          {isAuthenticated && <Link to={'/profile'}> <Avatar bg='teal.500' src={user.picture}/> </Link>}
+          {isAuthenticated && <Link to={'/profile'}> <Avatar bg='teal.500' src={user && user.picture}/> </Link>}
           </HStack>
         </Stack>
       </Container>
